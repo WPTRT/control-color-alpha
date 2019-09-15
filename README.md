@@ -10,7 +10,7 @@ This is a control containing a JS template. As such, it should be whitelisted in
 
 ```php
 add_action( 'customize_register', function( $wp_customize ) {
-	$wp_customize->register_control_type( '\WPTRT\Customize\Control\Color_Alpha_Control' );
+	$wp_customize->register_control_type( '\WPTRT\Customize\Control\ColorAlphaControl' );
 } );
 ```
 
@@ -18,7 +18,7 @@ After we register the control using the above code, we can use it in the customi
 
 
 ```php
-use \WPTRT\Customize\Control\Color_Alpha_Control;
+use \WPTRT\Customize\Control\ColorAlphaControl;
 
 add_action( 'customize_register', function( $wp_customize ) {
 
@@ -26,7 +26,7 @@ add_action( 'customize_register', function( $wp_customize ) {
 		'default'   => '#000000',
 		'transport' => 'refresh',
 	] );
-	$wp_customize->add_control( new Color_Alpha_Control( $wp_customize, 'your_setting_id', [
+	$wp_customize->add_control( new ColorAlphaControl( $wp_customize, 'your_setting_id', [
 		'label'      => __( 'My Color', 'mytheme' ),
 		'section'    => 'my_section',
 		'settings'   => 'your_setting_id',

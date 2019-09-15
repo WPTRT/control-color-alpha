@@ -1,6 +1,6 @@
 <?php // phpcs:ignore WordPress.Files.FileName
 /**
- * Customize API: Color_Alpha_Control class
+ * Customize API: ColorAlphaControl class
  *
  * @package WordPress
  * @subpackage Customize
@@ -18,7 +18,7 @@ use WP_Customize_Color_Control;
  *
  * @see WP_Customize_Control
  */
-class Color_Alpha_Control extends WP_Customize_Color_Control {
+class ColorAlphaControl extends WP_Customize_Color_Control {
 
 	/**
 	 * Type.
