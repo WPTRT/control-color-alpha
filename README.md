@@ -51,7 +51,7 @@ You'll need to use an autoloader with this. Ideally, this would be [Composer](ht
 From the command line:
 
 ```sh
-composer require wptrt/admin-notices
+composer require wptrt/control-color-alpha
 ```
 
 ### WPTRT Autoloader
@@ -62,6 +62,6 @@ If using the WPTRT autoloader, use the following code:
 include get_theme_file_path( 'path/to/autoload/src/Loader.php' );
 
 $loader = new \WPTRT\Autoload\Loader();
-$loader->add( 'WPTRT\\Customize\\Control', get_theme_file_path( 'path/to/admin-notices/src' ) );
+$loader->add( 'WPTRT\\Customize\\Control', get_theme_file_path( 'path/to/control-color-alpha/src' ) );
 $loader->register();
 ```
