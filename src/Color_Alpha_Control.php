@@ -1,4 +1,4 @@
-<?php
+<?php // phpcs:ignore WordPress.Files.FileName
 /**
  * Customize API: Color_Alpha_Control class
  *
@@ -20,11 +20,11 @@ use WP_Customize_Color_Control;
  */
 class Color_Alpha_Control extends WP_Customize_Color_Control {
 
-    /**
+	/**
 	 * Type.
 	 *
-     * @access public
-     * @since 1.0
+	 * @access public
+	 * @since 1.0
 	 * @var string
 	 */
 	public $type = 'color-alpha';
@@ -32,30 +32,30 @@ class Color_Alpha_Control extends WP_Customize_Color_Control {
 	/**
 	 * Enqueue scripts/styles for the color picker.
 	 *
-     * @access public
+	 * @access public
 	 * @since 1.0
-     * @return void
+	 * @return void
 	 */
 	public function enqueue() {
-        $control_root_url = get_template_directory_uri() . '/vendor/wptrt/control-color-alpha';
-        /**
-         * Filters the URL for the scripts.
-         *
-         * @since 1.0
-         * @param string $control_root_url The URL to the root folder of the package.
-         * @return string
-         */
-        $control_root_url = apply_filters( 'wptrt_color_picker_alpha_url', $control_root_url );
+		$control_root_url = get_template_directory_uri() . '/vendor/wptrt/control-color-alpha';
+		/**
+		 * Filters the URL for the scripts.
+		 *
+		 * @since 1.0
+		 * @param string $control_root_url The URL to the root folder of the package.
+		 * @return string
+		 */
+		$control_root_url = apply_filters( 'wptrt_color_picker_alpha_url', $control_root_url );
 
-        // Enquue scripts.
-        wp_enqueue_script(
+		// Enquue scripts.
+		wp_enqueue_script(
 			'wp-color-picker-alpha',
 			$control_root_url . '/src/wp-color-picker-alpha.js',
 			[ 'wp-color-picker', 'underscore' ],
 			'2.1.3',
 			true
 		);
-        wp_enqueue_script(
+		wp_enqueue_script(
 			'wptrt-control-color-picker-alpha',
 			$control_root_url . '/src/control.js',
 			[ 'jquery', 'customize-base', 'wp-color-picker-alpha' ],
@@ -68,19 +68,19 @@ class Color_Alpha_Control extends WP_Customize_Color_Control {
 			'wptrt-control-color-picker-alpha',
 			$control_root_url . '/src/style.css',
 			[ 'wp-color-picker' ],
-			time(),
+			time()
 		);
 	}
 
 	/**
 	 * Render a JS template for the content of the color picker control.
 	 *
-     * The only difference between this and the template from the WP_Customize_Color_Control object
-     * is the addition of `data-alpha=true` in the <input> element.
-     *
-     * @access public
+	 * The only difference between this and the template from the WP_Customize_Color_Control object
+	 * is the addition of `data-alpha=true` in the <input> element.
+	 *
+	 * @access public
 	 * @since 1.0
-     * @return void
+	 * @return void
 	 */
 	public function content_template() {
 		?>
