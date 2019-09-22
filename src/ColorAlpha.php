@@ -37,7 +37,12 @@ class ColorAlpha extends WP_Customize_Color_Control {
 	 * @return void
 	 */
 	public function enqueue() {
-		$control_root_url = get_template_directory_uri() . '/vendor/wptrt/control-color-alpha';
+		$control_root_url = str_replace(
+			wp_normalize_path( untrailingslashit( WP_CONTENT_DIR ) ),
+			untrailingslashit( content_url() ),
+			__DIR__
+		);
+
 		/**
 		 * Filters the URL for the scripts.
 		 *
@@ -50,14 +55,14 @@ class ColorAlpha extends WP_Customize_Color_Control {
 		// Enquue scripts.
 		wp_enqueue_script(
 			'wp-color-picker-alpha',
-			$control_root_url . '/src/wp-color-picker-alpha.js',
+			$control_root_url . '/wp-color-picker-alpha.js',
 			[ 'wp-color-picker', 'underscore' ],
 			'2.1.3',
 			true
 		);
 		wp_enqueue_script(
 			'wptrt-control-color-picker-alpha',
-			$control_root_url . '/src/control.js',
+			$control_root_url . '/control.js',
 			[ 'jquery', 'customize-base', 'wp-color-picker-alpha' ],
 			'1.0',
 			true
@@ -66,7 +71,7 @@ class ColorAlpha extends WP_Customize_Color_Control {
 		// Add custom styles.
 		wp_enqueue_style(
 			'wptrt-control-color-picker-alpha',
-			$control_root_url . '/src/style.css',
+			$control_root_url . '/style.css',
 			[ 'wp-color-picker' ],
 			time()
 		);
