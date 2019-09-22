@@ -2,6 +2,8 @@
 
 A color control for the WordPress Customizer with support for alpha channel.
 
+The control will save either a HEX value (`#000000`) or RGBA (`rgba(0,0,0,0.9)`) depending on the opacity of the selected color. If the color is completely opaque, then it will save a HEX value. If the selected color is not completely opaque (has an alpha value smaller than 1) then the value will be saved as RGBA.
+
 ## Usage
 
 ### Registering the Control
@@ -23,8 +25,9 @@ use \WPTRT\Customize\Control\ColorAlpha;
 add_action( 'customize_register', function( $wp_customize ) {
 
 	$wp_customize->add_setting( 'your_setting_id' , [
-		'default'   => '#000000',
-		'transport' => 'refresh',
+		'default'           => 'rgba(0,0,0,0.5)', // Use any HEX or RGBA value.
+		'transport'         => 'refresh',
+		'sanitize_callback' => 'my_custom_sanitization_callback'
 	] );
 	$wp_customize->add_control( new ColorAlpha( $wp_customize, 'your_setting_id', [
 		'label'      => __( 'My Color', 'mytheme' ),
@@ -34,12 +37,49 @@ add_action( 'customize_register', function( $wp_customize ) {
 } );
 ```
 
-Depending on where the files for this package are in your theme, you may need to add a filter so that the control assets get properly loaded. The default location for the package is the `vendor/wptrt/control-color-alpha` folder in your theme. If you are not using composer to load this package - or if you are using a custom folder-name instead of `vendor` for your packages, you can use the `wptrt_color_picker_alpha_url` filter:
+## Available filters
+
+### `wptrt_color_picker_alpha_url`
+
+You can use this filter to change the URL for control assets. By default the control will work out of the box for any plugins and themes installed in `wp-content/themes` and `wp-content/plugins` respectively. It is possible however to change the URL by using the `wptrt_color_picker_alpha_url` filter:
 
 ```php
 add_filter( 'wptrt_color_picker_alpha_url', function() {
-    return get_template_directory_uri() . '/my-custom-folder/control-color-alpha';
-});
+    return get_template_directory_uri() . '/vendor/wptrt/control-color-alpha/src';
+} );
+```
+
+## Sanitization
+
+All controls in the WordPress Customizer should have a sanitize_callback defined.
+You can write your own function and use it as a sanitization callback, or use the example function below:
+
+```php
+/**
+ * Sanitize colors.
+ *
+ * @static
+ * @access public
+ * @since 1.0.2
+ * @param string $value The color.
+ * @return string
+ */
+function my_custom_sanitization_callback( $value ) {
+	// This pattern will check and match 3/6/8-character hex, rgb, rgba, hsl, & hsla colors.
+	$pattern = '/^(\#[\da-f]{3}|\#[\da-f]{6}|\#[\da-f]{8}|rgba\(((\d{1,2}|1\d\d|2([0-4]\d|5[0-5]))\s*,\s*){2}((\d{1,2}|1\d\d|2([0-4]\d|5[0-5]))\s*)(,\s*(0\.\d+|1))\)|hsla\(\s*((\d{1,2}|[1-2]\d{2}|3([0-5]\d|60)))\s*,\s*((\d{1,2}|100)\s*%)\s*,\s*((\d{1,2}|100)\s*%)(,\s*(0\.\d+|1))\)|rgb\(((\d{1,2}|1\d\d|2([0-4]\d|5[0-5]))\s*,\s*){2}((\d{1,2}|1\d\d|2([0-4]\d|5[0-5]))\s*)|hsl\(\s*((\d{1,2}|[1-2]\d{2}|3([0-5]\d|60)))\s*,\s*((\d{1,2}|100)\s*%)\s*,\s*((\d{1,2}|100)\s*%)\))$/';
+	\preg_match( $pattern, $value, $matches );
+	// Return the 1st match found.
+	if ( isset( $matches[0] ) ) {
+		if ( is_string( $matches[0] ) ) {
+			return $matches[0];
+		}
+		if ( is_array( $matches[0] ) && isset( $matches[0][0] ) ) {
+			return $matches[0][0];
+		}
+	}
+	// If no match was found, return an empty string.
+	return '';
+}
 ```
 
 ## Autoloading
