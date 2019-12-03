@@ -11,7 +11,6 @@
  *     Cleaning up deprecated code for WP < 4.9.
  *     Improved inline comments.
  *     Fixed infinite recursion error.
- *     Removed _addInputListeners method - it's inherited from Iris.
  *     Formatting.
  *     Other minor bugfixes.
  *
@@ -434,6 +433,47 @@
 					self._color._alpha = 1;
 					self.active = 'external';
 					self._change();
+				});
+			}
+
+			if ( self.initialValue !== el.val() ) {
+				el.trigger( 'change' );
+			}
+		},
+
+		_addInputListeners: function( input ) {
+			var self = this,
+				debounceTimeout = 100,
+				callback = function( event ) {
+					var color = new Color( input.val() ),
+						val = input.val();
+
+					input.removeClass( 'iris-error' );
+
+					// We gave a bad color.
+					if ( color.error ) {
+
+						// Don't error on an empty input
+						if ( '' !== val ) {
+							input.addClass( 'iris-error' );
+						}
+					} else {
+						if ( color.toString() !== self._color.toString() ) {
+
+							// let's not do this on keyup for hex colors.
+							if ( ! ( ( 'keyup' === event.type || 'change' === event.type ) && val.match( /^[0-9a-fA-F]{3}$/ ) ) ) {
+								self._setOption( 'color', color.toString() );
+							}
+						}
+					}
+				};
+
+			input.on( 'change', callback ).on( 'keyup', self._debounce( callback, debounceTimeout ) );
+
+			// If we initialized hidden, show on first focus. The rest is up to you.
+			if ( self.options.hide ) {
+				input.one( 'focus', function() {
+					self.show();
 				});
 			}
 		}
