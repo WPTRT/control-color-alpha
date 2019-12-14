@@ -124,6 +124,7 @@ const WPTRTColorAlphaControl = wp.customize.Control.extend({
 			customizerSetting={ control.setting }
 			control={ control }
 			choices={ control.params.choices }
+			default={ control.params.defaultValue }
 		/>;
 		ReactDOM.render(
 			form,

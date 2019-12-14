@@ -99,23 +99,42 @@ const WPTRTColorAlphaForm = ( props ) => {
 		wp.customize.control( props.customizerSetting.id ).setting.set( formatValue( e.target.value ) );
 	};
 
+	/**
+	 * Reset value to its default.
+	 *
+	 * @param {Object} e - The click event.
+	 * @return {void}
+	 */
+	const resetValue = ( e ) => {
+		e.preventDefault();
+		let defaultValue = ( props.defaultValue ) ? props.defaultValue : '';
+		if ( 'string' === typeof defaultValue ) {
+			defaultValue = formatValue( defaultValue );
+		}
+		wp.customize.control( props.customizerSetting.id ).setting.set( defaultValue );
+	}
+
 	const styles = reactCSS({
 		'default': {
 			textInput: {
-				padding: '0 12px 0 45px',
 				fontFamily: 'Menlo, Consolas, monaco, monospace',
-				height: '35px',
-				marginBottom: '12px',
-				borderRadius: '4px'
+				borderRadius: '0 4px 4px 0',
+				width: '100%'
 			},
 
 			colorIndicator: {
 				background: props.value.css ? props.value.css : props.value,
 				display: 'block',
-				position: 'absolute',
 				width: '40px',
-				height: '35px',
 				borderRadius: '4px 0 0 4px'
+			},
+
+			inputWrapper: {
+				display: 'flex',
+				marginBottom: '12px',
+			},
+
+			resetButton: {
 			}
 		}
 	});
@@ -125,13 +144,16 @@ const WPTRTColorAlphaForm = ( props ) => {
 			<label className="customize-control-title">{ props.label }</label>
 			<span className="description customize-control-description" dangerouslySetInnerHTML={{ __html: props.description }}></span>
 			<div className="customize-control-notifications-container" ref={ props.setNotificationContainer }></div>
-			<span style={ styles.colorIndicator }></span>
-			<input
-				type="text"
-				style={ styles.textInput }
-				value={ 'array' === props.choices.save_as ? props.value.css : props.value }
-				onChange={ handleInputChange }
-			/>
+			<div style={ styles.inputWrapper }>
+				<span style={ styles.colorIndicator }></span>
+				<input
+					type="text"
+					style={ styles.textInput }
+					value={ 'array' === props.choices.save_as ? props.value.css : props.value }
+					onChange={ handleInputChange }
+				/>
+				<button className="button" onClick={ resetValue } style={ styles.resetButton }>{ window.wpColorPickerL10n.defaultString }</button>
+			</div>
 			<ChromePicker
 				width="300"
 				{ ...props.choices }
