@@ -2,6 +2,8 @@
 
 A color control for the WordPress Customizer with support for alpha channel.
 
+This is a customizer control using the [react-color](https://casesandberg.github.io/react-color/) colorpicker.
+
 The control will save either a HEX value (`#000000`) or RGBA (`rgba(0,0,0,0.9)`) depending on the opacity of the selected color. If the color is completely opaque, then it will save a HEX value. If the selected color is not completely opaque (has an alpha value smaller than 1) then the value will be saved as RGBA.
 
 ## Usage
@@ -45,7 +47,7 @@ You can use this filter to change the URL for control assets. By default the con
 
 ```php
 add_filter( 'wptrt_color_picker_alpha_url', function() {
-	return get_template_directory_uri() . '/vendor/wptrt/control-color-alpha/src';
+	return get_template_directory_uri() . '/vendor/wptrt/control-color-alpha';
 } );
 ```
 

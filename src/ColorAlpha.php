@@ -40,7 +40,7 @@ class ColorAlpha extends WP_Customize_Color_Control {
 		$control_root_url = str_replace(
 			wp_normalize_path( untrailingslashit( WP_CONTENT_DIR ) ),
 			untrailingslashit( content_url() ),
-			__DIR__
+			dirname( __DIR__ )
 		);
 
 		/**
@@ -52,28 +52,12 @@ class ColorAlpha extends WP_Customize_Color_Control {
 		 */
 		$control_root_url = apply_filters( 'wptrt_color_picker_alpha_url', $control_root_url );
 
-		// Enquue scripts.
-		wp_enqueue_script(
-			'wp-color-picker-alpha',
-			$control_root_url . '/wp-color-picker-alpha.js',
-			[ 'wp-color-picker', 'underscore' ],
-			'2.1.3',
-			true
-		);
 		wp_enqueue_script(
 			'wptrt-control-color-picker-alpha',
-			$control_root_url . '/control.js',
-			[ 'jquery', 'customize-base', 'wp-color-picker-alpha' ],
-			'1.0',
+			$control_root_url . '/dist/main.js',
+			[ 'customize-controls', 'wp-element', 'jquery', 'customize-base' ],
+			'1.1',
 			true
-		);
-
-		// Add custom styles.
-		wp_enqueue_style(
-			'wptrt-control-color-picker-alpha',
-			$control_root_url . '/style.css',
-			[ 'wp-color-picker' ],
-			time()
 		);
 	}
 
@@ -89,42 +73,11 @@ class ColorAlpha extends WP_Customize_Color_Control {
 	}
 
 	/**
-	 * Render a JS template for the content of the color picker control.
-	 *
-	 * The only difference between this and the template from the WP_Customize_Color_Control object
-	 * is the addition of `data-alpha=true` in the <input> element.
+	 * Empty JS template.
 	 *
 	 * @access public
 	 * @since 1.0.0
 	 * @return void
 	 */
-	public function content_template() {
-		?>
-		<# var defaultValue = '#RRGGBB', defaultValueAttr = '',
-			isHueSlider = data.mode === 'hue';
-		if ( data.defaultValue && _.isString( data.defaultValue ) && ! isHueSlider ) {
-			if ( '#' !== data.defaultValue.substring( 0, 1 ) ) {
-				defaultValue = '#' + data.defaultValue;
-			} else {
-				defaultValue = data.defaultValue;
-			}
-			defaultValueAttr = ' data-default-color=' + defaultValue; // Quotes added automatically.
-		} #>
-		<# if ( data.label ) { #>
-			<span class="customize-control-title">{{{ data.label }}}</span>
-		<# } #>
-		<# if ( data.description ) { #>
-			<span class="description customize-control-description">{{{ data.description }}}</span>
-		<# } #>
-		<div class="customize-control-content">
-			<label><span class="screen-reader-text">{{{ data.label }}}</span>
-			<# if ( isHueSlider ) { #>
-				<input class="color-picker-hue" type="text" data-type="hue" />
-			<# } else { #>
-				<input class="color-picker-hex" type="text" maxlength="7" data-alpha="true" placeholder="{{ defaultValue }}" {{ defaultValueAttr }} />
-			<# } #>
-			</label>
-		</div>
-		<?php
-	}
+	public function content_template() {}
 }

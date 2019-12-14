@@ -8,6 +8,7 @@
 /composer.json        export-ignore
 /composer.lock        export-ignore
 /contributing.md      export-ignore
+/.package-lock.json   export-ignore
 
 # Handle line endings.
 # See https://help.github.com/articles/dealing-with-line-endings/
