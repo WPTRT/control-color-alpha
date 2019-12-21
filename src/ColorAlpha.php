@@ -56,7 +56,7 @@ class ColorAlpha extends WP_Customize_Color_Control {
 			'wptrt-control-color-picker-alpha',
 			$control_root_url . '/dist/main.js',
 			// We're including wp-color-picker for localized strings, nothing more.
-			[ 'customize-controls', 'wp-element', 'jquery', 'customize-base', 'wp-color-picker' ],
+			[ 'customize-controls', 'wp-element', 'jquery', 'customize-base', 'wp-color-picker' ], // phpcs:ignore Generic.Arrays.DisallowShortArraySyntax
 			'1.1',
 			true
 		);
