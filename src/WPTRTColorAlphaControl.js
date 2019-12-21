@@ -24,6 +24,8 @@ const WPTRTColorAlphaControl = wp.customize.Control.extend({
 		control.setting.bind( () => {
 			control.renderContent();
 		} );
+
+		control.rgbaControlNotifications();
 	},
 
 	/**
@@ -154,6 +156,36 @@ const WPTRTColorAlphaControl = wp.customize.Control.extend({
 		if ( wp.customize.Control.prototype.destroy ) {
 			wp.customize.Control.prototype.destroy.call( control );
 		}
+	},
+
+		/**
+	 * Handles notifications.
+	 *
+	 * @returns {void}
+	 */
+	rgbaControlNotifications: function() {
+		const control = this;
+		const code = 'long_title';
+		const patternTest = RegExp( /^(\#[\da-f]{3}|\#[\da-f]{6}|\#[\da-f]{8}|rgba\(((\d{1,2}|1\d\d|2([0-4]\d|5[0-5]))\s*,\s*){2}((\d{1,2}|1\d\d|2([0-4]\d|5[0-5]))\s*)(,\s*(0\.\d+|1))\)|hsla\(\s*((\d{1,2}|[1-2]\d{2}|3([0-5]\d|60)))\s*,\s*((\d{1,2}|100)\s*%)\s*,\s*((\d{1,2}|100)\s*%)(,\s*(0\.\d+|1))\)|rgb\(((\d{1,2}|1\d\d|2([0-4]\d|5[0-5]))\s*,\s*){2}((\d{1,2}|1\d\d|2([0-4]\d|5[0-5]))\s*)|hsl\(\s*((\d{1,2}|[1-2]\d{2}|3([0-5]\d|60)))\s*,\s*((\d{1,2}|100)\s*%)\s*,\s*((\d{1,2}|100)\s*%)\))$/ );
+
+		// Make sure we have the message before proceeding.
+		if ( ! window._wpCustomizeControlsL10n.cheatin ) {
+			return;
+		}
+
+		wp.customize( control.id, function( setting ) {
+			setting.bind( function( value ) {
+
+				if ( false === patternTest.test( value ) ) {
+					setting.notifications.add( code, new wp.customize.Notification( code, {
+						type: 'warning',
+						message: window._wpCustomizeControlsL10n.cheatin
+					} ) );
+				} else {
+					setting.notifications.remove( code );
+				}
+			} );
+		} );
 	}
 });
 
