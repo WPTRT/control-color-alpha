@@ -141,7 +141,7 @@ const WPTRTColorAlphaForm = ( props ) => {
 
 	return (
 		<div>
-			<label className="customize-control-title">{ props.label }</label>
+			<label className="customize-control-title" for={ props.control.id + '-input' }>{ props.label }</label>
 			<span className="description customize-control-description" dangerouslySetInnerHTML={{ __html: props.description }}></span>
 			<div className="customize-control-notifications-container" ref={ props.setNotificationContainer }></div>
 			<div style={ styles.inputWrapper }>
@@ -151,6 +151,7 @@ const WPTRTColorAlphaForm = ( props ) => {
 					style={ styles.textInput }
 					value={ 'array' === props.choices.save_as ? props.value.css : props.value }
 					onChange={ handleInputChange }
+					id={ props.control.id + '-input' }
 				/>
 				<button className="button" onClick={ resetValue } style={ styles.resetButton }>{ window.wpColorPickerL10n.defaultString }</button>
 			</div>
